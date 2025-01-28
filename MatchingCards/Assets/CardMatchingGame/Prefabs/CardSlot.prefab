@@ -108,8 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e8c257dcfc7c841889dd6c869882ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardData: {fileID: 0}
   backCard: {fileID: 225937941741847428}
   frontCard: {fileID: 6356932654076922358}
+  frontImage: {fileID: 608279406710417619}
 --- !u!1 &225937940740868475
 GameObject:
   m_ObjectHideFlags: 0
