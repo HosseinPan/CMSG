@@ -11,7 +11,13 @@ public class Card : MonoBehaviour
 
     private CardState _state;
     private int _cardSlotId;
-    private CardShownEventData cardShownEventData = new CardShownEventData();
+    private CardShownEventData _cardShownEventData = new CardShownEventData();
+    private CardAnimation _cardAnimation;
+
+    private void Awake()
+    {
+        _cardAnimation = GetComponent<CardAnimation>();
+    }
 
     private void OnEnable()
     {
@@ -52,7 +58,14 @@ public class Card : MonoBehaviour
         if (_cardSlotId != cardSlot1 && _cardSlotId != cardSlot2)
             return;
 
-        StartCoroutine(ShowBackAnimation());
+        StartCoroutine(WaitForShowBackCard());
+    }
+
+    IEnumerator WaitForShowBackCard()
+    {
+        yield return new WaitForSeconds(2f);
+
+        _cardAnimation.FlipCard(false, ShowBackAnimationFinished);
     }
 
     public void OnClick()
@@ -66,27 +79,19 @@ public class Card : MonoBehaviour
     private void ShowFrontCard()
     {
         _state = CardState.Front;
-        ShowFrontAnimation();
-
-        cardShownEventData.cardSlotIndex = _cardSlotId;
-        cardShownEventData.cardDataId = cardData.Id;
-        EventBus.RaiseCardShown(cardShownEventData);
+        _cardAnimation.FlipCard(true, ShowFrontAnimationFinished);       
     }
 
-
-    private void ShowFrontAnimation()
+    private void ShowFrontAnimationFinished()
     {
-        backCard.SetActive(false);
-        frontCard.SetActive(true);
-        //yield return new WaitForSeconds(0.2f);
+        _cardShownEventData.cardSlotIndex = _cardSlotId;
+        _cardShownEventData.cardDataId = cardData.Id;
+        EventBus.RaiseCardShown(_cardShownEventData);
     }
 
-    IEnumerator ShowBackAnimation()
+    private void ShowBackAnimationFinished()
     {
-        yield return new WaitForSeconds(1.5f);
         _state = CardState.Back;
-        backCard.SetActive(true);
-        frontCard.SetActive(false);
     }
 
     IEnumerator CardMatchedAnimation()
@@ -96,7 +101,6 @@ public class Card : MonoBehaviour
         backCard.SetActive(false);
         frontCard.SetActive(false);      
     }
-
 
     public enum CardState
     {

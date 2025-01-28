@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 225937940571267542}
   - component: {fileID: 8114382898663162067}
   - component: {fileID: 3290110138713080167}
+  - component: {fileID: 8571538470257443555}
   m_Layer: 5
   m_Name: CardSlot
   m_TagString: Untagged
@@ -112,6 +113,21 @@ MonoBehaviour:
   backCard: {fileID: 225937941741847428}
   frontCard: {fileID: 6356932654076922358}
   frontImage: {fileID: 608279406710417619}
+--- !u!114 &8571538470257443555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225937940571267561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4154825747529cd41b7c1f181eecf1ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  front: {fileID: 6356932654076922358}
+  back: {fileID: 225937941741847428}
+  flipDuration: 0.5
 --- !u!1 &225937940740868475
 GameObject:
   m_ObjectHideFlags: 0
