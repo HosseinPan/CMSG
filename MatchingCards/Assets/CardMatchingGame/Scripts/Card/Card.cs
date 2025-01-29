@@ -20,6 +20,8 @@ public class Card : MonoBehaviour
     private CardShownEventData _cardShownEventData = new CardShownEventData();
     private CardAnimation _cardAnimation;
 
+    public CardState State => _state;
+
     private void Awake()
     {
         _cardAnimation = GetComponent<CardAnimation>();
@@ -105,8 +107,8 @@ public class Card : MonoBehaviour
 
     IEnumerator CardMatchedAnimation()
     {
-        yield return new WaitForSeconds(1.5f);
         _state = CardState.Done;
+        yield return new WaitForSeconds(1.5f);      
         backCard.SetActive(false);
         frontCard.SetActive(false);      
     }

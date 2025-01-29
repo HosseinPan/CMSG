@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private CanvasGroup canvasGroup;
     private List<int> tempCardIndexes = new List<int>();
     private List<int> tempCardDataIndexes = new List<int>();
+    private List<Card> cards = new List<Card>();
 
     private void Awake()
     {
@@ -21,11 +22,13 @@ public class GameController : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnStartGame += StartGame;
+        EventBus.OnCardMatched += CheckGameFinished;
     }
 
     private void OnDisable()
     {
         EventBus.OnStartGame -= StartGame;
+        EventBus.OnCardMatched -= CheckGameFinished;
     }
 
     private void StartGame(int columns, int rows)
@@ -35,6 +38,32 @@ public class GameController : MonoBehaviour
         EnableCanvasGroup();
     }
 
+    private void CheckGameFinished(int a, int b)
+    {
+        StartCoroutine(WaitForCheckGameFinished());
+    }
+
+    IEnumerator WaitForCheckGameFinished()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        bool gameFinished = true;
+        foreach (var card in cards)
+        {
+            if (card.State != Card.CardState.Done)
+            {
+                gameFinished = false;
+                break;
+            }
+        }
+
+        if (gameFinished)
+        {
+            yield return new WaitForSeconds(2f);
+            EventBus.RaiseGameFinished();
+        }
+    }
+
     private void SetCards(int columns, int rows)
     {
         foreach (Transform child in gridLayout.transform)
@@ -42,10 +71,13 @@ public class GameController : MonoBehaviour
             child.gameObject.SetActive(false);
         }
 
+        cards.Clear();
         int cardsCount = columns * rows;
         for (int i = 0; i < cardsCount; i++) 
         {
-            gridLayout.transform.GetChild(i).gameObject.SetActive(true);
+            var card = gridLayout.transform.GetChild(i).GetComponent<Card>();
+            card.gameObject.SetActive(true);
+            cards.Add(card);
         }
 
         tempCardIndexes.Clear();
@@ -64,11 +96,11 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < cardDataCount; i++)
         {
             int firstRandomIndex = Random.Range(0, tempCardIndexes.Count);
-            gridLayout.transform.GetChild(tempCardIndexes[firstRandomIndex]).GetComponent<Card>().ResetCard(cardsData[tempCardDataIndexes[i]]);
+            cards[tempCardIndexes[firstRandomIndex]].ResetCard(cardsData[tempCardDataIndexes[i]]);
             tempCardIndexes.RemoveAt(firstRandomIndex);
 
             int secondRandomIndex = Random.Range(0, tempCardIndexes.Count);
-            gridLayout.transform.GetChild(tempCardIndexes[secondRandomIndex]).GetComponent<Card>().ResetCard(cardsData[tempCardDataIndexes[i]]);
+            cards[tempCardIndexes[secondRandomIndex]].ResetCard(cardsData[tempCardDataIndexes[i]]);
             tempCardIndexes.RemoveAt(secondRandomIndex);
         }
     }

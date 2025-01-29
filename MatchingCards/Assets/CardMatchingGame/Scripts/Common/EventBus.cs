@@ -7,6 +7,7 @@ public static class EventBus
     public static event Action<int, int> OnCardNotMatched;
     public static event Action<int, int> OnStartGame;
     public static event Action OnGoMainMenu;
+    public static event Action OnGameFinished;
 
 
     public static void RaiseCardShown(CardShownEventData cardShownEventData)
@@ -32,6 +33,11 @@ public static class EventBus
     public static void RaiseGoMainMenu()
     {
         OnGoMainMenu?.Invoke();
+    }
+
+    public static void RaiseGameFinished()
+    {
+        OnGameFinished?.Invoke();
     }
 }
 
