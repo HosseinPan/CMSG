@@ -8,6 +8,11 @@ public class Card : MonoBehaviour
     [SerializeField] private GameObject backCard;
     [SerializeField] private GameObject frontCard;
     [SerializeField] private Image frontImage;
+    [SerializeField] private Image frontBackground;
+
+    [SerializeField] private Color naturalColor;
+    [SerializeField] private Color matchedColor;
+    [SerializeField] private Color notMatchedColor;
 
     private CardState _state;
     private int _cardSlotId;
@@ -47,7 +52,8 @@ public class Card : MonoBehaviour
 
         if (_cardSlotId != cardSlot1 && _cardSlotId != cardSlot2)
             return;
-        
+
+        frontBackground.color = matchedColor;
         StartCoroutine(CardMatchedAnimation());
     }
 
@@ -58,6 +64,7 @@ public class Card : MonoBehaviour
         if (_cardSlotId != cardSlot1 && _cardSlotId != cardSlot2)
             return;
 
+        frontBackground.color = notMatchedColor;
         StartCoroutine(WaitForShowBackCard());
     }
 
@@ -79,6 +86,7 @@ public class Card : MonoBehaviour
     private void ShowFrontCard()
     {
         _state = CardState.Front;
+        frontBackground.color = naturalColor;
         _cardAnimation.FlipCard(true, ShowFrontAnimationFinished);       
     }
 
