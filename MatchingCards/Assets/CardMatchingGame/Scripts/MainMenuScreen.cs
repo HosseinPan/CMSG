@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class MainMenuScreen : MonoBehaviour
 {
+    [SerializeField] private GameObject newLevelPanel;
+    [SerializeField] private GameObject loadLevelPanel;
+
 
     private CanvasGroup canvasGroup;
+    private LevelData _levelData;
 
     private void Awake()
     {
@@ -19,11 +23,13 @@ public class MainMenuScreen : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnGoMainMenu += ShowScreen;
+        EventBus.OnLoadedLevel += OnLoadedLevel;
     }
 
     private void OnDisable()
     {
         EventBus.OnGoMainMenu -= ShowScreen;
+        EventBus.OnLoadedLevel -= OnLoadedLevel;
     }
 
     public void OnLayout2x2Clicked()
@@ -41,19 +47,41 @@ public class MainMenuScreen : MonoBehaviour
         StartGame(5, 6);
     }
 
-    private void StartGame(int column, int rows)
+    public void ContinueButtonClicked()
+    {
+        StartGame(0, 0, _levelData);
+    }
+
+    private void StartGame(int column, int rows, LevelData levelData = null)
     {
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.DOFade(0f, 1).SetEase(Ease.Linear);
 
-        EventBus.RaiseStartGame(column, rows);
+        EventBus.RaiseStartGame(column, rows, levelData);
     }
 
     private void ShowScreen()
     {
+        EventBus.RaiseRequestLoadLevel();
+
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
+    }
+
+    private void OnLoadedLevel(LevelData levelData)
+    {
+        _levelData = levelData;
+        if (levelData == null)
+        {
+            newLevelPanel.SetActive(true);
+            loadLevelPanel.SetActive(false);
+        }
+        else
+        {
+            newLevelPanel.SetActive(false);
+            loadLevelPanel.SetActive(true);
+        }
     }
 }

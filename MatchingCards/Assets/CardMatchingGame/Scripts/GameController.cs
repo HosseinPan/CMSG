@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,11 @@ public class GameController : MonoBehaviour
     private List<int> tempCardIndexes = new List<int>();
     private List<int> tempCardDataIndexes = new List<int>();
     private List<Card> cards = new List<Card>();
+    private LevelData _levelData = new LevelData()
+    {
+        cardIds = new List<int>(),
+        cardStates = new List<int>()
+    };
 
     private void Awake()
     {
@@ -22,24 +28,65 @@ public class GameController : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnStartGame += StartGame;
-        EventBus.OnCardMatched += CheckGameFinished;
+        EventBus.OnCardMatched += OnMatchCards;
     }
 
     private void OnDisable()
     {
         EventBus.OnStartGame -= StartGame;
-        EventBus.OnCardMatched -= CheckGameFinished;
+        EventBus.OnCardMatched -= OnMatchCards;
     }
 
-    private void StartGame(int columns, int rows)
+    private void StartGame(int columns, int rows, LevelData levelData)
     {
-        SetCards(columns, rows);
+        if (levelData == null)
+        {
+            CreateNewLevel(columns, rows);
+        }
+        else
+        {
+            LoadLevel(levelData);
+        }
+    }
+
+    private void CreateNewLevel(int columns, int rows)
+    {
+        SetNewCards(columns, rows);
         SetGridCellSize(columns, rows);
         EnableCanvasGroup();
+
+        var cardIds = new List<int>();
+        var cardStates = new List<int>();
+        foreach (var card in cards)
+        {
+            cardIds.Add(card.CardData.Id);
+            cardStates.Add((int)CardState.Back);
+        }
+
+        _levelData.columns = columns;
+        _levelData.rows = rows;
+        _levelData.cardIds = cardIds;
+        _levelData.cardStates = cardStates;
+
+        EventBus.RaiseSaveLevel(_levelData);
     }
 
-    private void CheckGameFinished(int a, int b)
+    private void LoadLevel(LevelData levelData)
     {
+        _levelData = levelData;
+
+        LoadCards(levelData);
+        SetGridCellSize(levelData.columns, levelData.rows);
+        EnableCanvasGroup();
+
+    }
+
+    private void OnMatchCards(int cardSlot1, int cardSlot2)
+    {
+        _levelData.cardStates[cardSlot1] = (int)CardState.Done;
+        _levelData.cardStates[cardSlot2] = (int)CardState.Done;
+        EventBus.RaiseSaveLevel(_levelData);
+
         StartCoroutine(WaitForCheckGameFinished());
     }
 
@@ -50,7 +97,7 @@ public class GameController : MonoBehaviour
         bool gameFinished = true;
         foreach (var card in cards)
         {
-            if (card.State != Card.CardState.Done)
+            if (card.State != CardState.Done)
             {
                 gameFinished = false;
                 break;
@@ -59,12 +106,13 @@ public class GameController : MonoBehaviour
 
         if (gameFinished)
         {
+            EventBus.RaiseSaveLevel(null);
             yield return new WaitForSeconds(2f);
             EventBus.RaiseGameFinished();
         }
     }
 
-    private void SetCards(int columns, int rows)
+    private void SetNewCards(int columns, int rows)
     {
         foreach (Transform child in gridLayout.transform)
         {
@@ -102,6 +150,26 @@ public class GameController : MonoBehaviour
             int secondRandomIndex = Random.Range(0, tempCardIndexes.Count);
             cards[tempCardIndexes[secondRandomIndex]].ResetCard(cardsData[tempCardDataIndexes[i]]);
             tempCardIndexes.RemoveAt(secondRandomIndex);
+        }
+    }
+
+    private void LoadCards(LevelData levelData)
+    {
+        foreach (Transform child in gridLayout.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        cards.Clear();
+        int cardsCount = levelData.cardIds.Count;
+        for (int i = 0; i < cardsCount; i++)
+        {
+            var card = gridLayout.transform.GetChild(i).GetComponent<Card>();
+            card.gameObject.SetActive(true);
+            var cardData = cardsData.First(x => x.Id == levelData.cardIds[i]);
+            card.LoadCard(cardData, (CardState)levelData.cardStates[i]);
+
+            cards.Add(card);
         }
     }
 

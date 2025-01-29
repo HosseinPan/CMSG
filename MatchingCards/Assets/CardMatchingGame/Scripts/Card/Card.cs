@@ -21,6 +21,7 @@ public class Card : MonoBehaviour
     private CardAnimation _cardAnimation;
 
     public CardState State => _state;
+    public CardDataSO CardData => cardData;
 
     private void Awake()
     {
@@ -47,6 +48,23 @@ public class Card : MonoBehaviour
         _state = CardState.Back;
         backCard.SetActive(true);
         frontCard.SetActive(false);
+    }
+
+    public void LoadCard(CardDataSO cardData, CardState state)
+    {
+        if (state == CardState.Done)
+        {
+            this.cardData = cardData;
+            frontImage.sprite = cardData.FrontContent;
+            _cardSlotId = transform.GetSiblingIndex();
+            _state = CardState.Done;
+            backCard.SetActive(false);
+            frontCard.SetActive(false);
+        }
+        else 
+        {
+            ResetCard(cardData);
+        }
     }
 
     private void OnCardsMatched(int cardSlot1, int cardSlot2)
@@ -113,10 +131,11 @@ public class Card : MonoBehaviour
         frontCard.SetActive(false);      
     }
 
-    public enum CardState
-    {
-        Back,
-        Front,
-        Done
-    }
+}
+
+public enum CardState
+{
+    Back = 0,
+    Front = 1,
+    Done = 2
 }
