@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private CardDataSO[] cardsData;
 
     private CanvasGroup canvasGroup;
+    private List<int> tempCardIndexes = new List<int>();
+    private List<int> tempCardDataIndexes = new List<int>();
 
     private void Awake()
     {
@@ -46,13 +48,29 @@ public class GameController : MonoBehaviour
             gridLayout.transform.GetChild(i).gameObject.SetActive(true);
         }
 
+        tempCardIndexes.Clear();
+        tempCardDataIndexes.Clear();
+
+        int cardDataCount = cardsCount / 2;
+        for (int i = 0; i < cardDataCount; i++)
+        {
+            int randomCardDataIndex = Random.Range(0, cardsData.Length);
+            tempCardDataIndexes.Add(randomCardDataIndex);
+        }
         for (int i = 0; i < cardsCount; i++)
         {
-            int randomCard = UnityEngine.Random.Range(0, cardsData.Length);
-            gridLayout.transform.GetChild(i).GetComponent<Card>().ResetCard(cardsData[randomCard]);
+            tempCardIndexes.Add(i);
         }
+        for (int i = 0; i < cardDataCount; i++)
+        {
+            int firstRandomIndex = Random.Range(0, tempCardIndexes.Count);
+            gridLayout.transform.GetChild(tempCardIndexes[firstRandomIndex]).GetComponent<Card>().ResetCard(cardsData[tempCardDataIndexes[i]]);
+            tempCardIndexes.RemoveAt(firstRandomIndex);
 
-
+            int secondRandomIndex = Random.Range(0, tempCardIndexes.Count);
+            gridLayout.transform.GetChild(tempCardIndexes[secondRandomIndex]).GetComponent<Card>().ResetCard(cardsData[tempCardDataIndexes[i]]);
+            tempCardIndexes.RemoveAt(secondRandomIndex);
+        }
     }
 
     private void SetGridCellSize(int columns, int rows)
