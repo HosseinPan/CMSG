@@ -24,9 +24,9 @@ public static class EventBus
         OnCardNotMatched?.Invoke(cardSlotIndex1, cardSlotIndex2);
     }
 
-    public static void RaiseStartGame(int width, int height)
+    public static void RaiseStartGame(int column, int rows)
     {
-        OnStartGame?.Invoke(width, height);
+        OnStartGame?.Invoke(column, rows);
     }
 
     public static void RaiseGoMainMenu()

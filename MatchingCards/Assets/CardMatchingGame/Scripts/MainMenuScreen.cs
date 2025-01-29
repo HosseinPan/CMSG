@@ -54,10 +54,10 @@ public class MainMenuScreen : MonoBehaviour
         StartGame(5, 6);
     }
 
-    private void StartGame(int width, int height)
+    private void StartGame(int column, int rows)
     {
         FadeOut();
-        EventBus.RaiseStartGame(width, height);
+        EventBus.RaiseStartGame(column, rows);
     }
 
     private void FadeOut()

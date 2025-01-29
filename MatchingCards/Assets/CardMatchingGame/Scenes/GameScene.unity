@@ -750,6 +750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 684075510}
   - component: {fileID: 684075511}
+  - component: {fileID: 684075512}
   m_Layer: 5
   m_Name: GameScreen
   m_TagString: Untagged
@@ -786,10 +787,40 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684075509}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &684075512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684075509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc67a92c3a8f18e4399179f9a27591b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLayout: {fileID: 143710060}
+  cardsContainer: {fileID: 143710059}
+  cardsData:
+  - {fileID: 11400000, guid: 44d2fb0136e7d844584f7a6dd7af3f9c, type: 2}
+  - {fileID: 11400000, guid: 59689377b94211d42938c88c37e58bf1, type: 2}
+  - {fileID: 11400000, guid: 2a055b76d8cc4064f9f44a62412f6af1, type: 2}
+  - {fileID: 11400000, guid: 7862d3ec6a28548458451e5d4baa9f5f, type: 2}
+  - {fileID: 11400000, guid: ef43de5e59c2bdf4388deb457575cd22, type: 2}
+  - {fileID: 11400000, guid: 73b8f8f13667f794f93db51f8e0fdc6e, type: 2}
+  - {fileID: 11400000, guid: 8f2306fffd78db74fa2eb6acc5c8b5ef, type: 2}
+  - {fileID: 11400000, guid: 2576a8da74444b642a3804d5de6f790a, type: 2}
+  - {fileID: 11400000, guid: ba35a023a4cc9f74cb4f655e665ec5bd, type: 2}
+  - {fileID: 11400000, guid: 6271fd8b71176fe40b8593f3c9598f98, type: 2}
+  - {fileID: 11400000, guid: d6e787b0199687a4da32d3fe2f550fdd, type: 2}
+  - {fileID: 11400000, guid: 3a5a248ddfb4da547aff420f0bbb5620, type: 2}
+  - {fileID: 11400000, guid: fee2b2ff70b4dcd45a855c4180ee3be9, type: 2}
+  - {fileID: 11400000, guid: 665866ff39350474485427d4d1f9e01d, type: 2}
+  - {fileID: 11400000, guid: 41e54b13662f0cf4cbb4227e716a45fc, type: 2}
 --- !u!1001 &726274147
 PrefabInstance:
   m_ObjectHideFlags: 0

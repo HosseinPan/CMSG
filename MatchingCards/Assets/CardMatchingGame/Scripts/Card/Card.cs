@@ -10,6 +10,7 @@ public class Card : MonoBehaviour
     [SerializeField] private Image frontImage;
     [SerializeField] private Image frontBackground;
 
+    [Header("MatchedMechanicColors")]
     [SerializeField] private Color naturalColor;
     [SerializeField] private Color matchedColor;
     [SerializeField] private Color notMatchedColor;
@@ -26,7 +27,6 @@ public class Card : MonoBehaviour
 
     private void OnEnable()
     {
-        Reset();
         EventBus.OnCardMatched += OnCardsMatched;
         EventBus.OnCardNotMatched += OnCardsNotMatched;
     }
@@ -37,8 +37,9 @@ public class Card : MonoBehaviour
         EventBus.OnCardNotMatched -= OnCardsNotMatched;
     }
 
-    public void Reset()
+    public void ResetCard(CardDataSO cardData)
     {
+        this.cardData = cardData;
         frontImage.sprite = cardData.FrontContent;
         _cardSlotId = transform.GetSiblingIndex();
         _state = CardState.Back;
