@@ -101,6 +101,7 @@ public class Card : MonoBehaviour
         if (_state != CardState.Back)
             return;
 
+        EventBus.RaisePlaySfx(SfxType.CardFlip);
         ShowFrontCard();
     }
 

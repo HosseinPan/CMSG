@@ -40,10 +40,12 @@ public class MatchCardsController : MonoBehaviour
             if (isMatchingCards)
             {
                 EventBus.RaiseCardMatched(firstCardShownEventData.cardSlotIndex, secondCardShownEventData.cardSlotIndex);
+                EventBus.RaisePlaySfx(SfxType.CardMatch);
             }
             else
             {
                 EventBus.RaiseCardNotMatched(firstCardShownEventData.cardSlotIndex, secondCardShownEventData.cardSlotIndex);
+                EventBus.RaisePlaySfx(SfxType.CardMisMatch);
             }
         }
         else

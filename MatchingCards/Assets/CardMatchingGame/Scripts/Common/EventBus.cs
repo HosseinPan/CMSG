@@ -16,6 +16,7 @@ public static class EventBus
     public static event Action<int> OnGetInGameScore;
     public static event Action<int> OnGetTotalScore;
     public static event Action OnNewLevelCreated;
+    public static event Action<SfxType> OnPlaySfx;
 
 
 
@@ -88,6 +89,11 @@ public static class EventBus
     public static void RaiseNewLevelCreated()
     {
         OnNewLevelCreated?.Invoke();
+    }
+
+    public static void RaisePlaySfx(SfxType sfxType)
+    {
+        OnPlaySfx?.Invoke(sfxType);
     }
 }
 

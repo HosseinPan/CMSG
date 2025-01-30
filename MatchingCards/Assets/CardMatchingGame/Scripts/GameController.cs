@@ -110,6 +110,7 @@ public class GameController : MonoBehaviour
             EventBus.RaiseSaveLevel(null);
             yield return new WaitForSeconds(2f);
             EventBus.RaiseGameFinished();
+            EventBus.RaisePlaySfx(SfxType.GameFinished);
         }
     }
 
