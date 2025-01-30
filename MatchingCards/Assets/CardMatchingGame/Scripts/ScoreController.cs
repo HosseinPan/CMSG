@@ -45,7 +45,7 @@ public class ScoreController : MonoBehaviour
         EventBus.OnRequestInGameScore += OnRequestInGameScore;
         EventBus.OnRequestTotalScore += OnRequestTotalScore;
         EventBus.OnCardMatched += OnCardMatched;
-        EventBus.OnCardNotMatched += OnCardNotMatched;
+        EventBus.OnCardMisMatched += OnCardMisMatched;
         EventBus.OnGameFinished += OnGameFinished;
         EventBus.OnNewLevelCreated += OnNewLevelCreated;
     }
@@ -55,7 +55,7 @@ public class ScoreController : MonoBehaviour
         EventBus.OnRequestInGameScore -= OnRequestInGameScore;
         EventBus.OnRequestTotalScore -= OnRequestTotalScore;
         EventBus.OnCardMatched -= OnCardMatched;
-        EventBus.OnCardNotMatched -= OnCardNotMatched;
+        EventBus.OnCardMisMatched -= OnCardMisMatched;
         EventBus.OnGameFinished -= OnGameFinished;
         EventBus.OnNewLevelCreated -= OnNewLevelCreated;
     }
@@ -80,7 +80,7 @@ public class ScoreController : MonoBehaviour
         TotalScore += InGameScore;
     }
 
-    private void OnCardNotMatched(int arg1, int arg2)
+    private void OnCardMisMatched(int arg1, int arg2)
     {
         InGameScore -= notMatchCardLoseScore;
     }

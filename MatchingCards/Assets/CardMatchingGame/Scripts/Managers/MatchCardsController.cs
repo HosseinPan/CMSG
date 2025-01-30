@@ -44,7 +44,7 @@ public class MatchCardsController : MonoBehaviour
             }
             else
             {
-                EventBus.RaiseCardNotMatched(firstCardShownEventData.cardSlotIndex, secondCardShownEventData.cardSlotIndex);
+                EventBus.RaiseCardMisMatched(firstCardShownEventData.cardSlotIndex, secondCardShownEventData.cardSlotIndex);
                 EventBus.RaisePlaySfx(SfxType.CardMisMatch);
             }
         }

@@ -4,7 +4,7 @@ public static class EventBus
 {
     public static event Action<CardShownEventData> OnCardShown;
     public static event Action<int, int> OnCardMatched;
-    public static event Action<int, int> OnCardNotMatched;
+    public static event Action<int, int> OnCardMisMatched;
     public static event Action<int, int, LevelData> OnStartGame;
     public static event Action OnGoMainMenu;
     public static event Action OnGameFinished;
@@ -31,9 +31,9 @@ public static class EventBus
         OnCardMatched?.Invoke(cardSlotIndex1, cardSlotIndex2);
     }
 
-    public static void RaiseCardNotMatched(int cardSlotIndex1, int cardSlotIndex2)
+    public static void RaiseCardMisMatched(int cardSlotIndex1, int cardSlotIndex2)
     {
-        OnCardNotMatched?.Invoke(cardSlotIndex1, cardSlotIndex2);
+        OnCardMisMatched?.Invoke(cardSlotIndex1, cardSlotIndex2);
     }
 
     public static void RaiseStartGame(int column, int rows, LevelData levelData)

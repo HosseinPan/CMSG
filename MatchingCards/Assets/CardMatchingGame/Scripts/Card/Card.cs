@@ -31,13 +31,13 @@ public class Card : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnCardMatched += OnCardsMatched;
-        EventBus.OnCardNotMatched += OnCardsNotMatched;
+        EventBus.OnCardMisMatched += OnCardsMisMatched;
     }
 
     private void OnDisable()
     {
         EventBus.OnCardMatched -= OnCardsMatched;
-        EventBus.OnCardNotMatched -= OnCardsNotMatched;
+        EventBus.OnCardMisMatched -= OnCardsMisMatched;
     }
 
     public void ResetCard(CardDataSO cardData)
@@ -78,7 +78,7 @@ public class Card : MonoBehaviour
         StartCoroutine(CardMatchedAnimation());
     }
 
-    private void OnCardsNotMatched(int cardSlot1, int cardSlot2)
+    private void OnCardsMisMatched(int cardSlot1, int cardSlot2)
     {
         Debug.Log("OnCardsNotMatched");
 
