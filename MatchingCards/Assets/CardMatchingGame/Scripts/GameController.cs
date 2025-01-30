@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
         _levelData.cardStates = cardStates;
 
         EventBus.RaiseSaveLevel(_levelData);
+        EventBus.RaiseNewLevelCreated();
     }
 
     private void LoadLevel(LevelData levelData)

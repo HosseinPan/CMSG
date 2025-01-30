@@ -11,6 +11,12 @@ public static class EventBus
     public static event Action<LevelData> OnSaveLevel;
     public static event Action OnRequestLoadLevel;
     public static event Action<LevelData> OnLoadedLevel;
+    public static event Action OnRequestInGameScore;
+    public static event Action OnRequestTotalScore;
+    public static event Action<int> OnGetInGameScore;
+    public static event Action<int> OnGetTotalScore;
+    public static event Action OnNewLevelCreated;
+
 
 
 
@@ -57,6 +63,31 @@ public static class EventBus
     public static void RaiseLoadedLevel(LevelData levelData)
     {
         OnLoadedLevel?.Invoke(levelData);
+    }
+
+
+    public static void RaiseRequestInGameScore()
+    {
+        OnRequestInGameScore?.Invoke();
+    }
+    public static void RaiseRequestTotalScore()
+    {
+        OnRequestTotalScore?.Invoke();
+    }
+
+    public static void RaiseGetInGameScore(int score)
+    {
+        OnGetInGameScore?.Invoke(score);
+    }
+
+    public static void RaiseGetTotalScore(int score)
+    {
+        OnGetTotalScore?.Invoke(score);
+    }
+
+    public static void RaiseNewLevelCreated()
+    {
+        OnNewLevelCreated?.Invoke();
     }
 }
 
